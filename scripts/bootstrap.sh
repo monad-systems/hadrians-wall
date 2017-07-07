@@ -8,3 +8,5 @@ cabal update
 cabal install alex happy ansi-terminal mtl shake quickcheck
 
 export PATH="$HOME/.cabal/bin:$PATH"
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs

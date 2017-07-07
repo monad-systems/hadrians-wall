@@ -8,8 +8,6 @@ const fs = require('mz/fs');
 const Koa = require('koa');
 const app = module.exports = new Koa();
 
-// "database"
-
 // middleware
 
 app.use(logger());
