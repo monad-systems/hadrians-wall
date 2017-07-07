@@ -11,4 +11,4 @@ We will be mainly using this site as a pre-merge stat tracker. So we need to ext
 
 **Contribution is highly welcomed!**
 
-Our plan is to ship Hadrian into the master branch GHC once the community is satisfied with our work. This status site will be crucial to support our proposal.
+Our plan is to ship Hadrian into the master branch GHC *very soon*, once the community is satisfied with our work. This status site will be crucial to support our proposal.
