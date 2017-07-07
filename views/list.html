@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}Logs{% endblock %}
+
+{% block content %}
+  <h1>Logs</h1>
+  <ul id="logs">
+    {% for log in logs %}
+      <li>
+        <h2><a href="log/{{ log }}">{{ log }}</a></h2>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
