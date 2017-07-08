@@ -6,6 +6,9 @@ import datetime
 import time
 from shutil import copyfile
 import os
+import sys
+
+mode = sys.argv[1]
 
 dir = tempfile.mkdtemp()
 
@@ -15,7 +18,7 @@ ferr = open(dir + "/err.log", "w")
 print("Running commands in " + dir + "...")
 
 t1 = time.time()
-p = subprocess.Popen([os.getcwd() + "/quickest.sh"],
+p = subprocess.Popen([os.getcwd() + "/" + mode + ".sh"],
                      stdout=fout, stderr=ferr, cwd=dir,
                      shell=True)
 ret = p.wait()
@@ -31,7 +34,7 @@ if ret == 0:
 else:
     status = "failure"
 
-filename = now + "%" + "quickest" + "%" + str(t2 - t1) + "%" + status
+filename = now + "%" + mode + "%" + str(t2 - t1) + "%" + status
 
 copyfile(dir + "/out.log", "../static/logs/" + filename + ".out.log")
 copyfile(dir + "/err.log", "../static/logs/" + filename + ".err.log")

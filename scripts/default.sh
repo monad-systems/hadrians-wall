@@ -9,6 +9,7 @@ cd ghc
 git clone https://github.com/snowleopard/hadrian
 cd hadrian
 ./build.sh selftest
-./build.sh -j --flavour=quickest --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
 
 ../inplace/bin/ghc-stage2 Test.hs
+../inplace/bin/ghc-stage2 -dynamic --make Test.hs
