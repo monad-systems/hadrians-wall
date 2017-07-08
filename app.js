@@ -19,7 +19,7 @@ app.use(koaBody());
 // route definitions
 
 router.get('/', list)
-      .get('/log/:id', show);
+      .get('/logs/:id', show);
 
 app.use(router.routes());
 
@@ -28,7 +28,21 @@ app.use(router.routes());
  */
 
 async function list(ctx) {
-  const logs = await fs.readdir("logs");
+  const logfilesAll = await fs.readdir("logs");
+  const logfilesNames = logfilesAll.filter(function (f) {
+    return f.search("err") == -1;
+  });
+  const logs = logfilesNames.map(function (f) {
+    const prefix = f.slice(0, -8);
+    const segments = prefix.split("%");
+    return {
+        time: new Date(segments[0]),
+        type: segments[1],
+        length: parseFloat(segments[2]) / 60.0,
+        status: segments[3],
+        prefix: prefix
+    }
+  });
   await ctx.render('list', { logs: logs });
 }
 

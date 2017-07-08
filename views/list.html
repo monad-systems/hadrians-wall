@@ -1,14 +1,26 @@
 {% extends 'layout.html' %}
-
 {% block title %}Logs{% endblock %}
-
 {% block content %}
   <h1>Logs</h1>
-  <ul id="logs">
+  <table>
+    <tr>
+      <th>Time Started</th>
+      <th>Build Type</th>
+      <th>Length (min)</th>
+      <th>Status</th>
+      <th>Log files</th>
+    </tr>
     {% for log in logs %}
-      <li>
-        <h2><a href="log/{{ log }}">{{ log }}</a></h2>
-      </li>
+      <tr>
+        <td>{{ log.time.toTimeString() }}</td>
+        <td>{{ log.type }}</td>
+        <td>{{ log.length }}</td>
+        <td>{{ log.status }}</td>
+        <td>
+          <a href="logs/{{log.prefix}}.out.log">stdout</a>,
+          <a href="logs/{{log.prefix}}.err.log">stderr</a>
+        </td>
+      </tr>
     {% endfor %}
-  </ul>
+  </table>
 {% endblock %}
