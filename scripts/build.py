@@ -7,10 +7,12 @@ import time
 from shutil import copyfile
 import os
 
-dir = tempfile.gettempdir()
+dir = tempfile.mkdtemp()
 
 fout = open(dir + "/out.log", "w")
 ferr = open(dir + "/err.log", "w")
+
+print("Running commands in " + dir + "...")
 
 t1 = time.time()
 p = subprocess.Popen([os.getcwd() + "/quickest.sh"],
