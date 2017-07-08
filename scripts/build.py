@@ -33,5 +33,5 @@ else:
 
 filename = now + "%" + "quickest" + "%" + str(t2 - t1) + "%" + status
 
-copyfile(dir + "/out.log", "../logs/" + filename + ".out.log")
-copyfile(dir + "/err.log", "../logs/" + filename + ".err.log")
+copyfile(dir + "/out.log", "../static/logs/" + filename + ".out.log")
+copyfile(dir + "/err.log", "../static/logs/" + filename + ".err.log")

@@ -1,0 +1,17 @@
+body {
+  padding: 80px;
+  font: 16px Helvetica, Arial;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+table, th, td {
+    border: 0.5px solid black;
+    text-align: center;
+}

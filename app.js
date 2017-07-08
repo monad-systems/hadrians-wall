@@ -1,8 +1,9 @@
-
+const serve = require('koa-static');
 const render = require('./lib/render');
 const logger = require('koa-logger');
 const router = require('koa-router')();
 const koaBody = require('koa-body');
+const querystring = require('querystring');
 const fs = require('mz/fs');
 
 const Koa = require('koa');
@@ -18,8 +19,9 @@ app.use(koaBody());
 
 // route definitions
 
-router.get('/', list)
-      .get('/logs/:id', show);
+router.get('/', list);
+
+app.use(serve('static'));
 
 app.use(router.routes());
 
@@ -28,7 +30,7 @@ app.use(router.routes());
  */
 
 async function list(ctx) {
-  const logfilesAll = await fs.readdir("logs");
+  const logfilesAll = await fs.readdir("static/logs");
   const logfilesNames = logfilesAll.filter(function (f) {
     return f.search("err") == -1;
   });
@@ -40,33 +42,10 @@ async function list(ctx) {
         type: segments[1],
         length: parseFloat(segments[2]) / 60.0,
         status: segments[3],
-        prefix: prefix
+        prefix: querystring.escape(prefix)
     }
   });
   await ctx.render('list', { logs: logs });
-}
-
-/**
- * Show creation form.
- */
-
-async function add(ctx) {
-  await ctx.render('new');
-}
-
-/**
- * Show log :id.
- */
-
-async function show(ctx) {
-  const id = ctx.params.id;
-  const body = await fs.readFile("logs/" + id, 'utf8');
-  const log = {
-    title: id,
-    body: body
-  };
-  if (!log) ctx.throw(404, 'invalid log id');
-  await ctx.render('show', { log: log });
 }
 
 // listen
