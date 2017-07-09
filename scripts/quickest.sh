@@ -11,4 +11,5 @@ cd hadrian
 ./build.sh selftest
 ./build.sh -j --flavour=quickest --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
 
-../inplace/bin/ghc-stage2 Test.hs
+../inplace/bin/ghc-stage2 $HOME/hadrian-www/scripts/Test.hs
+
