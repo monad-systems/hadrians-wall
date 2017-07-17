@@ -3,7 +3,7 @@ Hadrian's Wall
 
 ![](wall.jpg)
 
-Nightly integration test system and status site for [the new GHC build system Hadrian based on Shake build](https://github.com/snowleopard).
+Nightly integration test system and status site for [the new GHC build system Hadrian based on Shake build](https://github.com/snowleopard/hadrian).
 
 ---
 
