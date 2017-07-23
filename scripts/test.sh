@@ -9,4 +9,5 @@ cd ghc
 git clone https://github.com/snowleopard/hadrian
 cd hadrian
 ./build.sh selftest
+./build.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
 ./build.sh -j test --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
