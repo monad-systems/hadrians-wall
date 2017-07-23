@@ -25,8 +25,8 @@
       <tr>
         <td style="width:30%">{{ log.time.toUTCString() }}</td>
         <td style="width:10%">{{ log.type }}</td>
-        <td style="width:10%">{{ log.length }}</td>
-        <td style="width:10%">{{ log.status }}</td>
+        <td style="width:10%">{{ log.length.toFixed(2) }}</td>
+        <td style="width:10%" class="status-{{log.status}}">{{ log.status }}</td>
         <td style="width:10%">
           <a href="logs/{{log.prefix}}.out.log">stdout</a>,
           <a href="logs/{{log.prefix}}.err.log">stderr</a>

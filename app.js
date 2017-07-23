@@ -3,7 +3,6 @@ const render = require('./lib/render');
 const logger = require('koa-logger');
 const router = require('koa-router')();
 const koaBody = require('koa-body');
-const request = require('koa-request');
 const querystring = require('querystring');
 const fs = require('mz/fs');
 const Koa = require('koa');
