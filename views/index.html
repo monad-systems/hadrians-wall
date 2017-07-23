@@ -1,10 +1,64 @@
-<html>
-<head>
-  <title>Hadrian's Wall</title>
-  <small>Nightly integration test system and status site for <a href="https://github.com/snowleopard">the new GHC build system Hadrian based on Shake build</a></small>
-</head>
-<body>
-  {% for log in logs %}
-  {% endfor %}
-</body>
-</html>
+{% extends 'layout.html' %}
+{% block title %}Logs{% endblock %}
+{% block content %}
+  <section>
+  <h1>Call for Contributions</h1>
+    <div id="hadrian-issues">
+        <h3>Hadrian's easy issues</h3>
+    </div>
+    <div id="hadrians-wall-issues">
+        <h3>Hadrian's Wall's easy issues</h3>
+    </div>
+  </section>
+
+  <section>
+  <h1>Build History</h1>
+  <table>
+    <tr>
+      <th>Time Started</th>
+      <th>Build Type</th>
+      <th>Length (min)</th>
+      <th>Status</th>
+      <th>Log files</th>
+    </tr>
+    {% for log in logs %}
+      <tr>
+        <td style="width:30%">{{ log.time.toUTCString() }}</td>
+        <td style="width:10%">{{ log.type }}</td>
+        <td style="width:10%">{{ log.length }}</td>
+        <td style="width:10%">{{ log.status }}</td>
+        <td style="width:10%">
+          <a href="logs/{{log.prefix}}.out.log">stdout</a>,
+          <a href="logs/{{log.prefix}}.err.log">stderr</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  </section>
+<script type="text/javascript">
+  function listIssues(url, elementId) {
+      var req = new XMLHttpRequest();
+
+      req.onload = function(e) { 
+        var issues = JSON.parse(this.responseText);
+        issues.forEach(function(issue) {
+
+            var a = document.createElement('a');
+            a.appendChild(document.createTextNode("#" + issue.number + " " + issue.title));
+            a.href = issue.html_url;
+
+            var node = document.createElement("li"); 
+            node.appendChild(a);
+            document.getElementById(elementId).appendChild(node);
+        });
+      };
+
+      req.open('GET', url);
+      req.send();
+  }
+
+  listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
+  listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
+</script>
+
+{% endblock %}
