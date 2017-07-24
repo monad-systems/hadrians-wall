@@ -4,7 +4,7 @@ import tempfile
 import subprocess
 import datetime
 import time
-from shutil import copyfile
+from shutil import copyfile, rmtree
 import os
 import sys
 
@@ -38,3 +38,6 @@ filename = now + "%" + mode + "%" + str(t2 - t1) + "%" + status
 
 copyfile(dir + "/out.log", "../static/logs/" + filename + ".out.log")
 copyfile(dir + "/err.log", "../static/logs/" + filename + ".err.log")
+
+# if status == "success":
+#    rmtree(dir)

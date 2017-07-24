@@ -6,7 +6,8 @@ export PATH="$HOME/.cabal/bin:$PATH"
 
 git clone --depth 1 --recursive git://github.com/ghc/ghc
 cd ghc
-git clone https://github.com/snowleopard/hadrian
+git clone https://github.com/izgzhen/hadrian
 cd hadrian
+git checkout staging
 ./build.sh selftest
 ./build.sh -j validate --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
