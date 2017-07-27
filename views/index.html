@@ -36,7 +36,7 @@
     function listLogs() {
         var req = new XMLHttpRequest();
         req.onload = function(e) {
-            var logs = JSON.parse(this.responseText);
+            var logs = JSON.parse(this.responseText).reverse();
             logs.forEach(function(log) {
                 var tdTime = document.createElement('td');
                 tdTime.style.width = "30%";
@@ -98,11 +98,11 @@
   listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
   listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
 
-   // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 50},
-        width = 600 - margin.left - margin.right,
-        height = 270 - margin.top - margin.bottom;
 
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 50, left: 70},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
     // Set the ranges
     var x = d3.scaleTime().range([0, width]);
     var y = d3.scaleLinear().range([height, 0]);
@@ -157,10 +157,26 @@
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                               (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Date");
+
         // Add the Y Axis
         svg.append("g")
             .attr("class", "y axis")
             .call(yAxis);
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Minutes spent on default type");
       };
 
       req.open('GET', "list");
