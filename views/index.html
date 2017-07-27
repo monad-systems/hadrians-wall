@@ -39,25 +39,25 @@
             var logs = JSON.parse(this.responseText);
             logs.forEach(function(log) {
                 var tdTime = document.createElement('td');
-                tdTime.style = "width:30%";
+                tdTime.style.width = "30%";
                 time = new Date(log.time);
                 tdTime.appendChild(document.createTextNode(time.toUTCString()));
 
                 var tdType = document.createElement('td');
-                tdType.style = "width:10%";
+                tdType.style.width = "10%";
                 tdType.appendChild(document.createTextNode(log.type));
 
                 var tdLength = document.createElement('td');
-                tdLength.style = "width:10%";
+                tdLength.style.width = "10%";
                 tdLength.appendChild(document.createTextNode(log.length.toFixed(2)));
 
                 var tdStatus = document.createElement('td');
-                tdStatus.style = "width:10%";
-                tdStatus.class = "status-" + log.status;
+                tdStatus.style.width = "10%";
+                tdStatus.className = "status-" + log.status;
                 tdStatus.appendChild(document.createTextNode(log.status));
 
                 var tdLinks = document.createElement('td');
-                tdLinks.status = "width:10%";
+                tdLinks.style.width = "10%";
                 tdLinks.appendChild(createAnchor("logs./" + log.preefix + ".out.log", "stdout"));
                 tdLinks.appendChild(document.createTextNode(", "));
                 tdLinks.appendChild(createAnchor("logs./" + log.preefix + ".err.log", "stderr"));
@@ -134,7 +134,7 @@
         var logs = JSON.parse(this.responseText);
 
         var data = logs.filter(function (log) {
-            return log.status == "success";
+            return log.status == "success" && log.type =="default";
         }).map(function(log) {
             return {
                 time: d3.isoParse(log.time),
