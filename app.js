@@ -18,15 +18,12 @@ app.use(koaBody());
 
 // route definitions
 
-router.get('/', list);
+router.get('/', index);
+router.get('/list', list);
 
 app.use(serve('static'));
 
 app.use(router.routes());
-
-/**
- * log listing.
- */
 
 async function list(ctx) {
   const logfilesAll = await fs.readdir("static/logs");
@@ -45,7 +42,11 @@ async function list(ctx) {
     }
   });
 
-  await ctx.render('index', { logs: logs });
+  ctx.body = logs;
+}
+
+async function index(ctx) {
+  await ctx.render('index');
 }
 
 // listen
