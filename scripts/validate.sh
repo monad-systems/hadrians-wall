@@ -9,5 +9,4 @@ cd ghc
 git clone https://github.com/izgzhen/hadrian
 cd hadrian
 git checkout staging
-./build.sh selftest
-./build.sh -j --flavour=quickest validate --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.sh -j --flavour=quickest validate --verbose
