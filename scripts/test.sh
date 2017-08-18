@@ -9,6 +9,6 @@ cd ghc
 git clone https://github.com/izgzhen/hadrian
 cd hadrian
 git checkout staging
-./build.sh selftest
-./build.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
-./build.sh -j test --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.cabal.sh selftest
+./build.cabal.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.cabal.sh -j test --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
