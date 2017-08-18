@@ -58,9 +58,9 @@
 
                 var tdLinks = document.createElement('td');
                 tdLinks.style.width = "10%";
-                tdLinks.appendChild(createAnchor("logs./" + log.preefix + ".out.log", "stdout"));
+                tdLinks.appendChild(createAnchor("logs/" + log.prefix + ".out.log", "stdout"));
                 tdLinks.appendChild(document.createTextNode(", "));
-                tdLinks.appendChild(createAnchor("logs./" + log.preefix + ".err.log", "stderr"));
+                tdLinks.appendChild(createAnchor("logs/" + log.prefix + ".err.log", "stderr"));
 
                 var row = document.createElement('tr');
                 row.appendChild(tdTime);
