@@ -12,6 +12,7 @@ cd hadrian
 git checkout staging
 ./build.cabal.sh selftest
 ./build.cabal.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.cabal.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=- --install-destdir=$PWD install
 
-../inplace/bin/ghc-stage2 $HOME/hadrian-www/scripts/Test.hs
-../inplace/bin/ghc-stage2 -dynamic --make $HOME/hadrian-www/scripts/Test.hs
+$PWD/usr/local/bin/ghc-stage2 $HOME/hadrian-www/scripts/Test.hs
+$PWD/usr/local/bin/ghc-stage2 -dynamic --make $HOME/hadrian-www/scripts/Test.hs
