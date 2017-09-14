@@ -7,7 +7,6 @@ export PATH="/usr/local/bin:$PATH"
 
 git clone --depth 1 --recursive git://github.com/ghc/ghc
 cd ghc
-git clone https://github.com/izgzhen/hadrian
+git clone https://github.com/snowleopard/hadrian
 cd hadrian
-git checkout staging
 ./build.cabal.sh -j --flavour=quickest validate --verbose
