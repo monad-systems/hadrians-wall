@@ -9,9 +9,9 @@ git clone --depth 1 --recursive git://github.com/ghc/ghc
 cd ghc
 git clone https://github.com/snowleopard/hadrian
 cd hadrian
-./build.cabal.sh selftest
-./build.cabal.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
-./build.cabal.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=- --install-destdir=$PWD install
+./build.sh selftest
+./build.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=-
+./build.sh -j --verbose --no-progress --progress-colour=never --progress-info=brief --profile=- --install-destdir=$PWD install
 
 $PWD/usr/local/bin/ghc $HOME/hadrian-www/scripts/Test.hs
 $PWD/usr/local/bin/ghc -dynamic --make $HOME/hadrian-www/scripts/Test.hs

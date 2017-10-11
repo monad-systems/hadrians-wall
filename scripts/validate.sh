@@ -9,4 +9,4 @@ git clone --depth 1 --recursive git://github.com/ghc/ghc
 cd ghc
 git clone https://github.com/snowleopard/hadrian
 cd hadrian
-./build.cabal.sh -j --flavour=quickest validate --verbose
+./build.sh -j --flavour=quickest validate --verbose
