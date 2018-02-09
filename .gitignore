@@ -50,3 +50,10 @@ jspm_packages
 Test
 *.hi
 *o
+
+.venv
+*~
+__pycache__
+db
+pool
+*.pyc
