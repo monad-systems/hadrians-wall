@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import tempfile
 import subprocess
 import datetime
@@ -8,12 +9,17 @@ from shutil import copyfile, rmtree
 import os
 import sys
 
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--mode', default="default", choices=["default", "validate"])
+parser.add_argument('--ghc_dir', help="GHC directory (optional)")
+args = parser.parse_args()
+print("arguments: " + str(args))
+
 tmp_dir = tempfile.mkdtemp()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-mode = sys.argv[1]
-if len(sys.argv) == 3:
-    ghc_dir = sys.argv[2]
+if args.ghc_dir:
+    ghc_dir = args.ghc_dir
 else:
     subprocess.call("git clone --depth 1 --recursive git://github.com/ghc/ghc", cwd=tmp_dir)
     ghc_dir = tmp_dir + "/" + "ghc"
@@ -29,7 +35,7 @@ t1 = time.time()
 hadrian_dir = ghc_dir + "/hadrian"
 
 print("Running commands in " + hadrian_dir + "...")
-p = subprocess.Popen([script_dir + "/" + mode + ".sh"],
+p = subprocess.Popen([script_dir + "/" + args.mode + ".sh"],
                      stdout=fout, stderr=ferr, cwd=hadrian_dir,
                      shell=True)
 
@@ -46,7 +52,7 @@ if ret == 0:
 else:
     status = "failure"
 
-filename = now + "%" + mode + "%" + str(t2 - t1) + "%" + status
+filename = now + "%" + args.mode + "%" + str(t2 - t1) + "%" + status
 
 logs_dir = script_dir + "/../static/logs/"
 os.system("mkdir -p " + logs_dir)
