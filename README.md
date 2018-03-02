@@ -9,7 +9,7 @@ Nightly integration test system and status site for [the new GHC build system Ha
 
 Here is the motivation: https://github.com/snowleopard/hadrian/issues/348
 
-We will be mainly using this site as a pre-merge stat tracker. So we need to extract data from daily builds & tests output, analyze them in backend and save the computed metadata somewhere, and let nodejs server to retrieve build's metadata and display nicely in front-end side, preferably with some visualization.
+We will be mainly using this site as a pre-merge stat tracker. So we need to extract data from daily builds & tests output, analyze them in backend and save the computed metadata somewhere, and let python server to retrieve build's metadata and display nicely in front-end side, preferably with some visualization.
 
 **Contributions & Comments are highly appreciated!**
 
