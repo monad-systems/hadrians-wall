@@ -22,12 +22,25 @@
     <tr>
       <th>Time Started</th>
       <th>Build Type</th>
-      <th>Length (min)</th>
+      <th>Duration (min)</th>
       <th>Status</th>
       <th>Log files</th>
     </tr>
+    {% for log in logs %}
+    <tr>
+      <td style="width: 30%;">{{ log.datetime }}</td>
+      <td style="width: 10%;">{{ log.mode }}</td>
+      <td style="width: 10%;">{{ log.duration }}</td>
+      <td class="status-{{ log.result }}" style="width: 10%;">{{ log.result }}</td>
+      <td style="width: 10%;">
+        <a href="logs/{{ log.prefix }}.out.log">stdout</a>,
+        <a href="logs/{{ log.prefix }}.err.log">stderr</a>
+      </td>
+    </tr>
+    {% endfor %}
   </table>
   </section>
+<script id="durations-json" type="application/json">{{durations_json}}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
 <script type="text/javascript">
 
@@ -38,71 +51,24 @@
         return a;
     }
 
-    function listLogs() {
-        var req = new XMLHttpRequest();
-        req.onload = function(e) {
-            var logs = JSON.parse(this.responseText).reverse();
-            logs.forEach(function(log) {
-                var tdTime = document.createElement('td');
-                tdTime.style.width = "30%";
-                time = new Date(log.time);
-                tdTime.appendChild(document.createTextNode(time.toUTCString()));
-
-                var tdType = document.createElement('td');
-                tdType.style.width = "10%";
-                tdType.appendChild(document.createTextNode(log.type));
-
-                var tdLength = document.createElement('td');
-                tdLength.style.width = "10%";
-                tdLength.appendChild(document.createTextNode(log.length.toFixed(2)));
-
-                var tdStatus = document.createElement('td');
-                tdStatus.style.width = "10%";
-                tdStatus.className = "status-" + log.status;
-                tdStatus.appendChild(document.createTextNode(log.status));
-
-                var tdLinks = document.createElement('td');
-                tdLinks.style.width = "10%";
-                tdLinks.appendChild(createAnchor("logs/" + log.prefix + ".out.log", "stdout"));
-                tdLinks.appendChild(document.createTextNode(", "));
-                tdLinks.appendChild(createAnchor("logs/" + log.prefix + ".err.log", "stderr"));
-
-                var row = document.createElement('tr');
-                row.appendChild(tdTime);
-                row.appendChild(tdType);
-                row.appendChild(tdLength);
-                row.appendChild(tdStatus);
-                row.appendChild(tdLinks);
-
-                document.getElementById("logs-table").appendChild(row);
-            });
-        };
-
-        req.open('GET', "list");
-        req.send();
-    }
-
-  function listIssues(url, elementId) {
-      var req = new XMLHttpRequest();
-
-      req.onload = function(e) { 
-        var issues = JSON.parse(this.responseText);
-        issues.forEach(function(issue) {
-            var a = createAnchor(issues.html_url, "#" + issue.number + " " + issue.title);
-            var node = document.createElement("li"); 
-            node.appendChild(a);
-            document.getElementById(elementId).appendChild(node);
-        });
-      };
-
-      req.open('GET', url);
-      req.send();
+ function listIssues(url, elementId) {
+     var req = new XMLHttpRequest();
+     req.onload = function(e) {
+       var issues = JSON.parse(this.responseText);
+       issues.forEach(function(issue) {
+           var a = createAnchor(issues.html_url, "#" + issue.number + " " + issue.title);
+           var node = document.createElement("li");
+           node.appendChild(a);
+           document.getElementById(elementId).appendChild(node);
+       });
+     };
+     req.open('GET', url);
+     req.send();
   }
 
-  listLogs();
-  listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
-  listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
 
+    listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
+    listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 50, left: 70},
@@ -119,8 +85,8 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
 
     // Define the line
     var valueline = d3.line()
-        .x(function(d) { return x(d.time); })
-        .y(function(d) { return y(d.length); });
+        .x(function(d) { return x(d.datetime); })
+        .y(function(d) { return y(d.duration); });
 
     // Adds the svg canvas
     var svg = d3.select("body")
@@ -133,23 +99,18 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
 
     // Get the data
     function draw() {
-      var req = new XMLHttpRequest();
 
-      req.onload = function(e) {
-        var logs = JSON.parse(this.responseText);
-
-        var data = logs.filter(function (log) {
-            return log.status == "success" && log.type =="default";
-        }).map(function(log) {
+        var data = JSON.parse(document.getElementById("durations-json").text)
+                       .map(function(log) {
             return {
-                time: d3.isoParse(log.time),
-                length: log.length
+                datetime: d3.isoParse(log.datetime),
+                duration: log.duration
             };
-        });
+        })
 
         // Scale the range of the data
-        x.domain(d3.extent(data, function(d) { return d.time; }));
-        y.domain([0, d3.max(data, function(d) { return d.length; })]);
+        x.domain(d3.extent(data, function(d) { return d.datetime; }));
+        y.domain([0, d3.max(data, function(d) { return d.duration; })]);
 
         // Add the valueline path.
         svg.append("path")
@@ -183,10 +144,6 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
             .style("text-anchor", "middle")
             .text("Minutes spent on default type");
       };
-
-      req.open('GET', "list");
-      req.send();
-    }
 
     draw();
 
