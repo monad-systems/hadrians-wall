@@ -1,0 +1,152 @@
+{% extends 'layout.html' %}
+{% block title %}Logs{% endblock %}
+{% block content %}
+  <section>
+  <h1>Call for Contributions</h1>
+    <div id="hadrian-issues">
+        <h3>Hadrian's easy issues</h3>
+    </div>
+    <div id="hadrians-wall-issues">
+        <h3>Hadrian's Wall's easy issues</h3>
+    </div>
+  </section>
+  <hr>
+  <p><b>
+    How to contribute to our build history:
+    <a href="https://github.com/izgzhen/hadrians-wall">project homepage</a>
+  </b></p>
+  <hr>
+  <section>
+  <h1>Build History</h1>
+  <table id="logs-table">
+    <tr>
+      <th>Time Started</th>
+      <th>Build Type</th>
+      <th>Duration (min)</th>
+      <th>Status</th>
+      <th>Log files</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+      <td style="width: 30%;">{{ log.datetime }}</td>
+      <td style="width: 10%;">{{ log.mode }}</td>
+      <td style="width: 10%;">{{ log.duration }}</td>
+      <td class="status-{{ log.result }}" style="width: 10%;">{{ log.result }}</td>
+      <td style="width: 10%;">
+        <a href="logs/{{ log.prefix }}.out.log">stdout</a>,
+        <a href="logs/{{ log.prefix }}.err.log">stderr</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  </section>
+<div id="durations-json" type="application/json" hidden>{{durations_json|safe}}</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
+<script type="text/javascript">
+
+    function createAnchor(url, text) {
+        var a = document.createElement('a');
+        a.appendChild(document.createTextNode(text));
+        a.href = url;
+        return a;
+    }
+
+ function listIssues(url, elementId) {
+     var req = new XMLHttpRequest();
+     req.onload = function(e) {
+       var issues = JSON.parse(this.responseText);
+       issues.forEach(function(issue) {
+           var a = createAnchor(issues.html_url, "#" + issue.number + " " + issue.title);
+           var node = document.createElement("li");
+           node.appendChild(a);
+           document.getElementById(elementId).appendChild(node);
+       });
+     };
+     req.open('GET', url);
+     req.send();
+  }
+
+
+    listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
+    listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 50, left: 70},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+    // Set the ranges
+    var x = d3.scaleTime().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
+
+    // Define the axes
+    var xAxis = d3.axisBottom(x).ticks(5);
+
+    var yAxis = d3.axisLeft(y).ticks(5);
+
+    // Define the line
+    var valueline = d3.line()
+        .x(function(d) { return x(d.datetime); })
+        .y(function(d) { return y(d.duration); });
+
+    // Adds the svg canvas
+    var svg = d3.select("body")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+    // Get the data
+    function draw() {
+
+        var data = JSON.parse(document.getElementById("durations-json").innerText)
+                       .map(function(log) {
+            return {
+                datetime: d3.isoParse(log.datetime),
+                duration: log.duration
+            };
+        })
+
+        // Scale the range of the data
+        x.domain(d3.extent(data, function(d) { return d.datetime; }));
+        y.domain([0, d3.max(data, function(d) { return d.duration; })]);
+
+        // Add the valueline path.
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", valueline(data));
+
+        // Add the X Axis
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                               (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Date");
+
+        // Add the Y Axis
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
+        // text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Minutes spent on default type");
+      };
+
+    draw();
+
+</script>
+
+{% endblock %}
