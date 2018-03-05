@@ -34,6 +34,9 @@ t1 = time.time()
 
 hadrian_dir = ghc_dir + "/hadrian"
 
+subprocess.call(["./build.sh", "clean"], cwd=hadrian_dir)
+rmtree(hadrian_dir + "/usr", ignore_errors=True)
+
 print("Running commands in " + hadrian_dir + "...")
 p = subprocess.Popen([script_dir + "/" + args.mode + ".sh"],
                      stdout=fout, stderr=ferr, cwd=hadrian_dir,
