@@ -1,0 +1,3 @@
+[submodule "hadrians-brick"]
+	path = hadrians-brick
+	url = https://github.com/izgzhen/hadrians-brick
