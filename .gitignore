@@ -53,3 +53,5 @@ Test
 
 *.pyc
 .venv
+
+*.swp
