@@ -21,8 +21,8 @@ function listIssues(url, elementId) {
 }
 
 
-// listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
-// listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
+listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
+listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
 
 function compare_chart_data(a, b) {
     if (a.x < b.x) {
