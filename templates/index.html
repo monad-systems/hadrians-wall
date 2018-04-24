@@ -2,6 +2,10 @@
 {% block title %}Logs{% endblock %}
 {% block content %}
   <section>
+    <h1>Build History Graph</h1>
+    <canvas width="800" height="400" id="myChart"></canvas>
+  </section>
+  <section>
   <h1>Call for Contributions</h1>
     <div id="hadrian-issues">
         <h3>Hadrian's easy issues</h3>
@@ -40,8 +44,7 @@
     {% endfor %}
   </table>
   </section>
-  <canvas  width="400" height="400" id="myChart"></canvas>
-<div id="durations-json" type="application/json" hidden>{{durations_json|safe}}</div>
+<div id="logs-json" type="application/json" hidden>{{logs_json|safe}}</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="static/main.js"></script>
 

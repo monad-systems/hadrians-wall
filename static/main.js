@@ -21,19 +21,10 @@ function listIssues(url, elementId) {
 }
 
 
-listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
-listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
+// listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
+// listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
 
-window.onload = function () {
-  var data = JSON.parse(document.getElementById("durations-json").innerText)
-    .map(function(log) {
-      return {
-        x: new Date(log.timestamp),
-        y: log.duration
-      };
-    });
-
-  data.sort(function (a, b) {
+function compare_chart_data(a, b) {
     if (a.x < b.x) {
       return -1;
     }
@@ -41,19 +32,64 @@ window.onload = function () {
       return 1;
     }
     return 0;
+}
+
+function log_to_data(log) {
+  return {
+    x: new Date(log.timestamp),
+    y: log.duration
+  };
+}
+
+window.onload = function () {
+  var logs = JSON.parse(document.getElementById("logs-json").innerText);
+  var ok_defaults = [];
+  var ok_quickest = [];
+  var failed = [];
+
+  logs.forEach(function (log) {
+    console.log(log);
+    if (log['exit-code'] == 0) {
+      if (log.mode == 'default') {
+        ok_defaults.push(log_to_data(log));
+      } else if (log.flavour == 'quickest' && log.clean == true) {
+        ok_quickest.push(log_to_data(log));
+      }
+    } else { // log.exit_code != 0
+      failed.push(log_to_data(log));
+    }
   });
+
+  ok_defaults.sort(compare_chart_data);
+  ok_quickest.sort(compare_chart_data);
+  failed.sort(compare_chart_data);
+
+  console.log(ok_defaults);
+  console.log(ok_quickest);
+  console.log(failed);
 
   var ctx = document.getElementById("myChart").getContext('2d');
   var myLineChart = new Chart(ctx, {
     type: 'line',
     data: {
-      label: "label",
+      label: "duration chart",
       datasets: [
-        { label: "ds",
-          data: data,
+        { label: "flavour=default exits 0",
+          data: ok_defaults,
           fill: false,
+          borderColor: '#00cc00'
+        },
+        { label: "flavour=quickest exits 0",
+          data: ok_quickest,
+          fill: false,
+          borderColor: '#0080ff'
+        },
+        { label: "exits non-0",
+          data: failed,
+          fill: false,
+          borderColor: '#ff0000'
         }
-      ]
+       ]
     },
     options: {
       responsive: false,
