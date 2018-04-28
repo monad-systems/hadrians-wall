@@ -45,15 +45,21 @@ window.onload = function () {
   var logs = JSON.parse(document.getElementById("logs-json").innerText);
   var ok_defaults = [];
   var ok_quickest = [];
+  var ok_quickest_cross = [];
   var failed = [];
 
   logs.forEach(function (log) {
-    console.log(log);
     if (log['exit-code'] == 0) {
       if (log.mode == 'default') {
         ok_defaults.push(log_to_data(log));
-      } else if (log.flavour == 'quickest' && log.clean == true) {
-        ok_quickest.push(log_to_data(log));
+      } else if (log.clean == true) {
+        if (log.flavour == 'quickest') {
+          ok_quickest.push(log_to_data(log));
+        } else if (log.flavour == 'quickest-cross') {
+          ok_quickest_cross.push(log_to_data(log));
+        } else {
+          console.log("unknown flavour: " + log.flavour);
+        }
       }
     } else { // log.exit_code != 0
       failed.push(log_to_data(log));
@@ -62,6 +68,7 @@ window.onload = function () {
 
   ok_defaults.sort(compare_chart_data);
   ok_quickest.sort(compare_chart_data);
+  ok_quickest_cross.sort(compare_chart_data);
   failed.sort(compare_chart_data);
 
   console.log(ok_defaults);
@@ -77,17 +84,26 @@ window.onload = function () {
         { label: "flavour=default exits 0",
           data: ok_defaults,
           fill: false,
-          borderColor: '#00cc00'
+          borderColor: '#00cc00',
+          pointBackgroundColor: '#00cc00'
         },
         { label: "flavour=quickest exits 0",
           data: ok_quickest,
           fill: false,
-          borderColor: '#0080ff'
+          borderColor: '#0080ff',
+          pointBackgroundColor: '#0080ff'
+        },
+        { label: "flavour=quickest-cross exits 0",
+          data: ok_quickest_cross,
+          fill: false,
+          borderColor: '#74a2a2',
+          pointBackgroundColor: '#74a2a2'
         },
         { label: "exits non-0",
           data: failed,
           fill: false,
-          borderColor: '#ff0000'
+          borderColor: '#ff0000',
+          pointBackgroundColor: 'ff0000'
         }
        ]
     },
