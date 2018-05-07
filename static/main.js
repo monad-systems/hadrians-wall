@@ -46,6 +46,7 @@ window.onload = function () {
   var ok_defaults = [];
   var ok_quickest = [];
   var ok_quickest_cross = [];
+  var ok_quick = [];
   var failed = [];
 
   logs.forEach(function (log) {
@@ -57,6 +58,8 @@ window.onload = function () {
           ok_quickest.push(log_to_data(log));
         } else if (log.flavour == 'quickest-cross') {
           ok_quickest_cross.push(log_to_data(log));
+        } else if (log.flavour == 'quick') {
+          ok_quick.push(log_to_data(log));
         } else {
           console.log("unknown flavour: " + log.flavour);
         }
@@ -69,6 +72,7 @@ window.onload = function () {
   ok_defaults.sort(compare_chart_data);
   ok_quickest.sort(compare_chart_data);
   ok_quickest_cross.sort(compare_chart_data);
+  ok_quick.sort(compare_chart_data);
   failed.sort(compare_chart_data);
 
   console.log(ok_defaults);
@@ -98,6 +102,12 @@ window.onload = function () {
           fill: false,
           borderColor: '#74a2a2',
           pointBackgroundColor: '#74a2a2'
+        },
+        { label: "flavour=quick exits 0",
+          data: ok_quick,
+          fill: false,
+          borderColor: '#cc33ff',
+          pointBackgroundColor: '#cc33ff'
         },
         { label: "exits non-0",
           data: failed,
