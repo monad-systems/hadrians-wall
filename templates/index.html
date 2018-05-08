@@ -5,45 +5,12 @@
     <h1>Build History Graph</h1>
     <canvas width="800" height="400" id="myChart"></canvas>
   </section>
-  <section>
-  <h1>Call for Contributions</h1>
-    <div id="hadrian-issues">
-        <h3>Hadrian's easy issues</h3>
-    </div>
-    <div id="hadrians-wall-issues">
-        <h3>Hadrian's Wall's easy issues</h3>
-    </div>
-  </section>
-  <hr>
-  <p><b>
-    How to contribute to our build history:
-    <a href="https://github.com/izgzhen/hadrians-wall">project homepage</a>
-  </b></p>
-  <hr>
-  <section>
-  <h1>Build History</h1>
-  <table id="logs-table">
-    <tr>
-      <th>Time Started</th>
-      <th>Build Type</th>
-      <th>Duration (min)</th>
-      <th>Status</th>
-      <th>Log files</th>
-    </tr>
-    {% for log in logs %}
-    <tr>
-      <td style="width: 30%;">{{ log.datetime }}</td>
-      <td style="width: 10%;">{{ log.mode }}</td>
-      <td style="width: 10%;">{{ log.duration }}</td>
-      <td class="status-{{ log.result }}" style="width: 10%;">{{ log.result }}</td>
-      <td style="width: 10%;">
-        <a href="logs/{{ log.prefix }}.out.log">stdout</a>,
-        <a href="logs/{{ log.prefix }}.err.log">stderr</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  </section>
+  <p>
+    <b>
+      How to contribute to our build history:
+      <a href="https://github.com/izgzhen/hadrians-wall">project homepage</a>
+    </b>
+  </p>
 <div id="logs-json" type="application/json" hidden>{{logs_json|safe}}</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="static/main.js"></script>

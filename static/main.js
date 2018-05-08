@@ -1,29 +1,3 @@
-function createAnchor(url, text) {
-  var a = document.createElement('a');
-  a.appendChild(document.createTextNode(text));
-  a.href = url;
-  return a;
-}
-
-function listIssues(url, elementId) {
-  var req = new XMLHttpRequest();
-  req.onload = function(e) {
-    var issues = JSON.parse(this.responseText);
-    issues.forEach(function(issue) {
-      var a = createAnchor(issues.html_url, "#" + issue.number + " " + issue.title);
-      var node = document.createElement("li");
-      node.appendChild(a);
-      document.getElementById(elementId).appendChild(node);
-    });
-  };
-  req.open('GET', url);
-  req.send();
-}
-
-
-listIssues('https://api.github.com/repos/snowleopard/hadrian/issues?labels=easy', "hadrian-issues");
-listIssues('https://api.github.com/repos/izgzhen/hadrians-wall/issues?labels=easy', "hadrians-wall-issues");
-
 function compare_chart_data(a, b) {
     if (a.x < b.x) {
       return -1;
