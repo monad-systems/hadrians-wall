@@ -5,12 +5,18 @@
     <h1>Build History Graph</h1>
     <canvas width="800" height="400" id="myChart"></canvas>
   </section>
-  <p>
-    <b>
+  <section>
+    <h1>Contributions</h1>
+    <ul>
+      {% for contrib in contribs %}
+      <li>{{contrib[0]}} : {{contrib[1]}}</li>
+      {% endfor %}
+    </ul>
+    <p>
       How to contribute to our build history:
       <a href="https://github.com/izgzhen/hadrians-wall">project homepage</a>
-    </b>
-  </p>
+    </p>
+  </section>
 <div id="logs-json" type="application/json" hidden>{{logs_json|safe}}</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="static/main.js"></script>
